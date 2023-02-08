@@ -1,0 +1,37 @@
+body{
+    background:#042159;
+    color:#77D9AB;
+
+
+}
+
+
+
+
+
+.form{
+display:flex;
+
+flex-direction: column;
+height:300px;
+width:500px;
+
+margin: auto;
+flex-wrap: wrap;
+
+align-items:center;
+}
+.container{
+height:auto;
+border:1px solid green;
+background-color: grey;
+width:700px;
+
+}
+.table{
+    background-color:white;
+}
+h1{
+    padding-left: 35%;
+    padding-right: 10%;
+}
