@@ -4,7 +4,6 @@ form.addEventListener("submit",function(event){
 event.preventDefault();
 
 
-
 // let type = document.getElementById('expense').value;
     let desc = document.getElementById('description').value;
     let category = document.getElementById('category').value;
@@ -16,13 +15,20 @@ event.preventDefault();
     const expense = {
         desc, 
         category, 
-        amount,
-        id: expenses.length > 0 ? expenses[expenses.length - 1].id + 1 : 1,
+        amount
     }
 
     expenses.push(expense);
+    axios.post('https://crudcrud.com/api/ca08ddb5b2734516adbe262558887e08/newdata', expense)
+  .then(function (response) {
     
-    localStorage.setItem('expenses', JSON.stringify(expenses));
+    fetch()
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+    
+    //localStorage.setItem('expenses', JSON.stringify(expenses));
 }
 
 document.querySelector('form').reset();
@@ -36,34 +42,54 @@ showExpenses();
 
 })
 
-const showExpenses = () => {
+console.log("fetching")
+let fetch=()=>{
+axios.get('https://crudcrud.com/api/ca08ddb5b2734516adbe262558887e08/newdata')
+  .then(function (response) {
+    showExpenses(response.data)
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+}
+fetch()
+const showExpenses = (data) => {
 
     const expenseTable = document.getElementById('expenseTable');
 
     expenseTable.innerHTML = '';
 
-    for(let i = 0; i < expenses.length; i++){
+    
+    for(let i = 0; i < data.length; i++){
+    
         expenseTable.innerHTML += `
             <tr>
-                <td>${expenses[i].category}</td>
-                <td>${expenses[i].desc}</td>
-                <td>$${expenses[i].amount}</td>
-                <td><a class="deleteButton" onclick="deleteExpense(${expenses[i].id})">
+                <td>${data[i].category}</td>
+                <td>${data[i].desc}</td>
+                <td>$${data[i].amount}</td>
+                
+
+            
+                
+                
+
+                <td><a class="deleteButton" onclick=deleteExpense(${data[i]._id})>
                     Delete</td>
             </tr>
         `;
     }
 }
 
-const deleteExpense = (id) => {
-    for(let i = 0; i < expenses.length; i++){
-        if(expenses[i].id == id){
-            expenses.splice(i, 1);
-        }
-    }
 
-    // localStorage
-    localStorage.setItem('expenses', JSON.stringify(expenses));
-    showExpenses();
+const deleteExpense = (id) => {
+    console.log(id)
+    axios.delete(`https://example.com/api/ca08ddb5b2734516adbe262558887e08/data/${id}`)
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 console.log("hello")
