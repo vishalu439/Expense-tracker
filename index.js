@@ -18,17 +18,20 @@ event.preventDefault();
         amount
     }
 
-    expenses.push(expense);
-    axios.post('https://crudcrud.com/api/ca08ddb5b2734516adbe262558887e08/newdata', expense)
-  .then(function (response) {
-    
-    fetch()
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-    
-    //localStorage.setItem('expenses', JSON.stringify(expenses));
+    //expenses.push(expense);
+  
+  async function postData() {
+    try {
+      const response = await axios.post('https://crudcrud.com/api/e264f330d5b1463a8f69f8ec2c9683af/newdata', expense
+      );
+      console.log(response.data);
+      fetch()
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  postData()
+  
 }
 
 document.querySelector('form').reset();
@@ -43,16 +46,16 @@ showExpenses();
 })
 
 console.log("fetching")
-let fetch=()=>{
-axios.get('https://crudcrud.com/api/ca08ddb5b2734516adbe262558887e08/newdata')
-  .then(function (response) {
+async function fetch() {
+  try {
+    const response = await axios.get('https://crudcrud.com/api/e264f330d5b1463a8f69f8ec2c9683af/newdata');
+    console.log(response);
     showExpenses(response.data)
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-
+  } catch (error) {
+    console.error(error);
+  }
 }
+
 fetch()
 const showExpenses = (data) => {
 
@@ -62,7 +65,8 @@ const showExpenses = (data) => {
 
     
     for(let i = 0; i < data.length; i++){
-    
+      var itemId = data[i]._id
+      console.log(itemId)
         expenseTable.innerHTML += `
             <tr>
                 <td>${data[i].category}</td>
@@ -74,22 +78,22 @@ const showExpenses = (data) => {
                 
                 
 
-                <td><a class="deleteButton" onclick=deleteExpense(${data[i]._id})>
+                <td><a id=${itemId} onclick="deleteExpense(id)">
                     Delete</td>
             </tr>
+            
         `;
     }
 }
 
-
-const deleteExpense = (id) => {
-    console.log(id)
-    axios.delete(`https://example.com/api/ca08ddb5b2734516adbe262558887e08/data/${id}`)
-    .then(function (response) {
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+async function deleteExpense(id) {
+  console.log(id)
+  try {
+    const response = await axios.delete(`https://crudcrud.com/api/e264f330d5b1463a8f69f8ec2c9683af/newdata/${id}`);
+    console.log(response.data);
+    fetch()
+  } catch (error) {
+    console.error(error);
+  }
 }
-console.log("hello")
+
